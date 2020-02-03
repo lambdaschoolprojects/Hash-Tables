@@ -129,7 +129,19 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        oldStorage = self.storage
+        self.storage = [None] * self.capacity * 2
+
+        for i in range(len(oldStorage)):
+            if oldStorage[i] != None:
+                cur = oldStorage[i]
+                while True:
+                    self.insert(cur.key, cur.value)
+                    if cur.next is not None:
+                        cur = cur.next
+                    else:
+                        break
+
 
 
 
