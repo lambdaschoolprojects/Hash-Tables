@@ -51,7 +51,20 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        # Hash  key
+        index = self._hash_mod(key)
+
+        # Check value of storage at index
+        existing_key = self.storage[index] != None
+
+        # Create LinkedPair
+        pair = LinkedPair(key, value)
+
+        if existing_key:
+            pair.next = self.storage[index]
+
+        # Insert LinkedPair into storage
+        self.storage[index] = pair
 
 
 
@@ -63,7 +76,27 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        index = self._hash_mod(key)
+
+        cur = self.storage[index]
+        prev = self.storage[index]
+
+        if cur == None:
+            print("No matching key/value pair.")
+            return
+
+        while cur.key != key and cur.next != None:
+            prev = cur
+            cur = cur.next
+
+        if cur.key != key:
+            print("No matching key/value pair.")
+            return
+
+        if cur == prev:
+            self.storage[index] = None
+        else:
+            prev.next = cur.next
 
 
     def retrieve(self, key):
@@ -74,7 +107,19 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        index = self._hash_mod(key)
+        list = self.storage[index]
+
+        if list is None:
+            return None
+
+        while list.key != key and list.next != None:
+            list = list.next
+
+        if list.key != key:
+            return None
+
+        return list.value
 
 
     def resize(self):
@@ -84,7 +129,19 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        oldStorage = self.storage
+        self.storage = [None] * self.capacity * 2
+
+        for i in range(len(oldStorage)):
+            if oldStorage[i] != None:
+                cur = oldStorage[i]
+                while True:
+                    self.insert(cur.key, cur.value)
+                    if cur.next is not None:
+                        cur = cur.next
+                    else:
+                        break
+
 
 
 
